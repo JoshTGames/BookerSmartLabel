@@ -7,21 +7,34 @@ if os.path.exists(libdir):
 
 from waveshare_epd import epd2in13_V4
 from PIL import Image,ImageDraw,ImageFont
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
+logging.info("Booker smart label V0.01-PREALPHA")
 
-# Initialize the display
-epd = epd2in13_V4.EPD()
-epd.init()
-epd.Clear()
+try:
+    logging.info("Booker smart label V0.01-PREALPHA")
 
-# Create a blank image
-image = Image.new('1', (epd.height, epd.width), 255)
-draw = ImageDraw.Draw(image)
+    # Initialize the display
+    epd = epd2in13_V4.EPD()
+    epd.init()
+    epd.Clear()
 
-# Load font and draw text
-font = ImageFont.load_default()
-draw.text((10, 40), "Hello World", font=font, fill=0)
+    # Create a blank image
+    image = Image.new('1', (epd.height, epd.width), 255)
+    draw = ImageDraw.Draw(image)
 
-# Display the image
-epd.display(epd.getbuffer(image))
-epd.sleep()
+    w, h = draw.textsize(text, font=font)
+    x = (epd.width - w) // 2
+    y = (epd.height - h) // 2
+
+    # Load font and draw text
+    font = ImageFont.load_default()
+    draw.text((x, y), "Hello World", font=font, fill=0)
+
+    # Display the image
+    epd.display(epd.getbuffer(image))
+    epd.sleep()
+except KeyboardInterrupt:
+    epd2in13_V4.epdconfig.module_exit(cleanup=True)
+    exit()

@@ -19,18 +19,23 @@ try:
     epd = epd2in13_V4.EPD()
     epd.init()
     epd.Clear()
-    font = ImageFont.load_default()
+    # font = ImageFont.load_default()
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 40)
+
+
+    debugText = "Hello World!"
 
     # Create a blank image
     image = Image.new('1', (epd.height, epd.width), 255)
     draw = ImageDraw.Draw(image)
 
-    bbox = draw.textbbox((0,0), "Hello World", font=font)
+    bbox = draw.textbbox((0,0), debugText, font=font)
     w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
 
-    # Load font and draw text
-    
-    draw.text((w,h), "Hello World", font=font, fill=0)
+    x, y = (epd.width - w) // 2, (epd.height - h) //2
+
+    # Load font and draw text    
+    draw.text((x, y), debugText, font=font, fill=0)
 
     # Display the image
     epd.display(epd.getbuffer(image))

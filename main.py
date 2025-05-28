@@ -20,8 +20,6 @@ try:
     epd.init()
     epd.Clear()
     font = ImageFont.load_default()
-    # font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
-
 
     debugText = "Hello World!"
 

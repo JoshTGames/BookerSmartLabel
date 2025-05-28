@@ -28,12 +28,14 @@ try:
     draw = ImageDraw.Draw(image)
 
     bbox = draw.textbbox((0,0), debugText, font=font)
-    w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    h, w = bbox[2] - bbox[0], bbox[3] - bbox[1]
 
-    x, y = epd.width // 2, epd.height // 2
+    x = (epd.width - w) // 2
+    y = (epd.height - h) // 2
+
 
     # Load font and draw text    
-    draw.text((x, y), debugText, font=font, fill=0)
+    draw.text((y, w), debugText, font=font, fill=0)
 
     # Display the image
     epd.display(epd.getbuffer(image))

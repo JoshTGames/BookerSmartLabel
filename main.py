@@ -35,7 +35,7 @@ try:
 
 
     # Load font and draw text    
-    draw.text((y, w), debugText, font=font, fill=0)
+    draw.text((y, x), debugText, font=font, fill=0)
 
     # Display the image
     epd.display(epd.getbuffer(image))

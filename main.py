@@ -1,5 +1,4 @@
-import sys
-import os
+import sys, os, time
 
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
@@ -37,6 +36,19 @@ try:
 
     # Load font and draw text    
     draw.text((y, x), debugText, font=font, fill=0)
+    time.sleep(3)
+
+    newTxt = "This is a\n test"
+
+    bbox = draw.textbbox((0,0), newTxt, font=font)
+    h, w = bbox[2] - bbox[0], bbox[3] - bbox[1]
+
+    x = (epd.width - w) // 2
+    y = (epd.height - h) // 2
+
+
+    # Load font and draw text    
+    draw.text((y, x), newTxt, font=font, fill=0)
 
     # Display the image
     epd.display(epd.getbuffer(image))

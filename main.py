@@ -19,8 +19,8 @@ try:
     epd = epd2in13_V4.EPD()
     epd.init()
     epd.Clear()
-    # font = ImageFont.load_default()
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
+    font = ImageFont.load_default()
+    # font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
 
 
     debugText = "Hello World!"

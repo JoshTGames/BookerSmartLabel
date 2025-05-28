@@ -30,7 +30,7 @@ try:
     bbox = draw.textbbox((0,0), debugText, font=font)
     w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
 
-    x, y = (epd.width - w) // 2, (epd.height - h) //2
+    x, y = epd.width // 2, epd.height // 2
 
     # Load font and draw text    
     draw.text((x, y), debugText, font=font, fill=0)

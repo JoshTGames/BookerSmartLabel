@@ -38,7 +38,7 @@ try:
     draw.text((x, y), debugText, font=font, fill=0)
 
     # Display the image
-    epd.display(epd.getbuffer(image))
+    epd.display_fast(epd.getbuffer(image))
     epd.sleep()
 except KeyboardInterrupt:
     epd2in13_V4.epdconfig.module_exit(cleanup=True)

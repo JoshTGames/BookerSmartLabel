@@ -21,7 +21,7 @@ try:
     epd.Clear()
     font = ImageFont.load_default()
 
-    debugText = "Hello World!"
+    debugText = "Hello Booker! >:D 🙈"
 
     # Create a blank image
     image = Image.new('1', (epd.height, epd.width), 255)

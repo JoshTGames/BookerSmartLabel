@@ -19,6 +19,7 @@ try:
     epd = epd2in13_V4.EPD()
     epd.init()
     epd.Clear()
+    font = ImageFont.load_default()
 
     # Create a blank image
     image = Image.new('1', (epd.height, epd.width), 255)
@@ -28,7 +29,7 @@ try:
     w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
 
     # Load font and draw text
-    font = ImageFont.load_default()
+    
     draw.text((w,h), "Hello World", font=font, fill=0)
 
     # Display the image

@@ -24,7 +24,7 @@ try:
     image = Image.new('1', (epd.height, epd.width), 255)
     draw = ImageDraw.Draw(image)
 
-    bbox = draw.textbbox((0,0) "Hello World", font=font)
+    bbox = draw.textbbox((0,0), "Hello World", font=font)
     w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
 
     # Load font and draw text

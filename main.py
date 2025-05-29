@@ -13,9 +13,9 @@ try:
     while True:
         
         name = str(input("Text:\t"))
+        size = str(input("Styling:\t"))
         # scale = float(input("Scale:\t"))
-        fontSize = float(input("Font Size:\t"))
-        screen.display_text([[name, 1]], font, fontSize)
+        screen.display_text([[name, 1]], size)
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

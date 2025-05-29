@@ -43,8 +43,9 @@ def display_text(textData: List[Tuple[str, str]]):
     for txt, sizing in textData:
         font = ImageFont.truetype(fontSettings['font'], fontSettings['sizing'][sizing])
         bbox = font.getbbox(txt)
-
-        height = (bbox[3] - bbox[1]) / 2
+        
+        tH = (bbox[3] - bbox[1])
+        height += tH / 2
 
         draw.text((HEIGHT//2, ((WIDTH//2) * 0) + height), txt, font=font, fill=0, anchor="mm", align="center")
 

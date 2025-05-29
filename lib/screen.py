@@ -49,7 +49,7 @@ def display_text(textData: List[Tuple[str, float, str]]):
         y += bbox[3] - bbox[1] # Get text height
         x = (WIDTH - (bbox[2] - bbox[0])) // 2 # Center horizontal
 
-        draw.text((y, x), txt, font=font, fill=0)
+        draw.text((x, y), txt, font=font, fill=0)
 
     clear()
     epd.display_fast(epd.getbuffer(image))

@@ -25,7 +25,7 @@ WIDTH, HEIGHT = epd.width, epd.height
 
 
 
-def display_text(textData: List[Tuple[str, float, str]]):
+def display_text(textData: List[Tuple[str, float]], fontType):
     """
     Distributes text on the 2"13V4 waveshare screen
 
@@ -38,23 +38,35 @@ def display_text(textData: List[Tuple[str, float, str]]):
     draw = ImageDraw.Draw(image)
     
     txtScale = sum([item[1] for item in textData])
-    yStart = 0
-    y = yStart
+
+    for t, s in textData:
+        font = ImageFont.truetype(fontType, 24)
+        bbox = draw.textbbox((0,0), t, font=font)
+
+        h: int = (s / txtScale) * HEIGHT #
+        w: int = (WIDTH - (bbox[2] - bbox[0])) // 2 # Centers on X-axis
+
+        draw.text((w,h), t, font=font, fill=0)
+
+
+
+
+    # yStart = 0
+    # y = yStart
     
-    for txt, scl, fnt in textData:        
-
-        maxH = int((scl / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
-        maxW = int(WIDTH / len(txt))
-        size = min(maxH, maxW)
+    # for txt, scl in textData:        
+        # maxH = int((scl / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
+        # maxW = int(WIDTH / len(txt))
+        # size = min(maxH, maxW)
         
-        font = ImageFont.truetype(fnt, size)
-        
-        bbox = draw.textbbox((0, 0), txt, font=font)
+        # font = ImageFont.truetype(fontType, size)
 
-        y += bbox[3] - bbox[1] # Get text height
-        x = (WIDTH - (bbox[2] - bbox[0])) // 2 # Center horizontal
+        # bbox = draw.textbbox((0, 0), txt, font=font)
 
-        draw.text((x, y), txt, font=font, fill=0)
+        # y += bbox[3] - bbox[1] # Get text height
+        # x = (WIDTH - (bbox[2] - bbox[0])) // 2 # Center horizontal
+
+        # draw.text((x, y), txt, font=font, fill=0)
 
     clear()
     epd.display_fast(epd.getbuffer(image))

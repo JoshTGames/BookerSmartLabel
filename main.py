@@ -4,10 +4,7 @@ libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
 
-from lib import screen, json
-settings = json.ReadFile(os.getcwd() + '/settings.json')
-font = settings['default-font']
-
+from lib import screen
 
 try:
     while True:

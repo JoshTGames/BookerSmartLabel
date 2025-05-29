@@ -12,7 +12,7 @@ try:
         name = str(input("Text:\t"))
         size = str(input("Styling:\t"))
         # scale = float(input("Scale:\t"))
-        screen.display_text([[name, size]])
+        screen.display_text([[name, size], ["Stock Control", "h2"]])
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

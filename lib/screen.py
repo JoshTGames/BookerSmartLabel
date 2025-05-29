@@ -28,12 +28,13 @@ WIDTH, HEIGHT = epd.width, epd.height
 
 
 
-def display_text(textData: List[Tuple[str, str]]):
+def display_text(textData: List[Tuple[str, str]], spacing: float):
     """
     Distributes text on the 2"13V4 waveshare screen
 
     Parameters:
     textData (array): [[string, string],...] - text, fontStyle
+    spacing (float): distance between element
     """
     image = Image.new('1', (HEIGHT, WIDTH), 255)
     draw = ImageDraw.Draw(image)
@@ -47,7 +48,7 @@ def display_text(textData: List[Tuple[str, str]]):
         tH = (bbox[3] - bbox[1])
 
         draw.text((HEIGHT//2, ((WIDTH//2) * 0) + (height + tH / 2)), txt, font=font, fill=0, anchor="mm", align="center")
-        height += tH
+        height += tH + spacing
 
     clear()
     epd.display_fast(epd.getbuffer(image))

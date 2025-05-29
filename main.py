@@ -11,7 +11,7 @@ try:
         
         name = str(input("Text:\t"))
         role = str(input("Role:\t"))
-        screen.display_text([[name, "h1"], [role, "h3"]])
+        screen.display_text([[name, "h1"], [role, "h3"]], 10)
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

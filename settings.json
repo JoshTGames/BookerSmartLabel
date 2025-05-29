@@ -1,0 +1,7 @@
+{
+    "user":{
+        "name": "Josh",
+        "role": "Stock Control"
+    },
+    "default-font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+}

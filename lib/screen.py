@@ -1,0 +1,65 @@
+import sys, os, logging
+from typing import List, Tuple
+
+libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
+if os.path.exists(libdir):
+    sys.path.append(libdir)
+
+from waveshare_epd import epd2in13_V4
+from PIL import Image, ImageDraw, ImageFont
+
+epd = None
+epdName = "epd2\"13V4"
+try:
+    # Initialize the display
+    epd = epd2in13_V4.EPD()
+    epd.init_fast()
+    epd.Clear()
+    logging.info(epdName + " active!")
+except IOError as e:
+    logging.info(epdName + " failed... \n" + e)
+
+# SCREEN CONSTS
+WIDTH, HEIGHT = epd.width, epd.height
+
+
+
+
+def display_text(textData: List[Tuple[str, float, str]], padding: float, spacing: float):
+    """
+    Distributes text on the 2"13V4 waveshare screen
+
+    Parameters:
+    textData (array): [[string, float, string],...] - text, scale between 0-1, fontType
+    padding (float): Distance away from screen border
+    spacing (float): Distance away from other elements
+    """
+    image = Image.new('1', (HEIGHT, WIDTH), 255)
+    draw = ImageDraw.Draw(image)
+
+    
+    txtScale = sum([item[1] for item in textData])
+    yStart = padding / 2
+    y = yStart
+    for txt, scl, fnt in textData:        
+        size = int((scl / txtScale) * (HEIGHT - (padding / 2))) # Scales the text proportionately to the screen height
+        font = ImageFont.truetype(fnt, size)
+
+        bbox = draw.textbbox((0, 0), txt, font=font)
+
+        y += bbox[3] - bbox[1] # Get text height
+        x = (WIDTH - (bbox[2] - bbox[0])) // 2 # Center horizontal
+
+        draw.text((y, x), txt, font=font, fill=0)
+        y += spacing
+    
+    epd.display_fast(epd.getbuffer(image))
+    sleep()
+
+
+def sleep() -> None:
+    logging.info(epdName + " sleeping...")
+    epd.sleep()
+
+def clear() -> None:
+    logging.info(epdName + " clearing...")

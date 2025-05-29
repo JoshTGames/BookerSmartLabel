@@ -13,7 +13,7 @@ try:
     while True:
         screen.clear()
         name = str(input("Text:\t"))
-        screen.display_text([[name, 1, font]])
+        screen.display_text([[name, .01, font]])
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

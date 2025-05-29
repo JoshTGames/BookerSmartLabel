@@ -25,7 +25,7 @@ WIDTH, HEIGHT = epd.width, epd.height
 
 
 
-def display_text(textData: List[Tuple[str, float]], fontType):
+def display_text(textData: List[Tuple[str, float]], fontType, fontSize = None):
     """
     Distributes text on the 2"13V4 waveshare screen
 
@@ -40,7 +40,7 @@ def display_text(textData: List[Tuple[str, float]], fontType):
     txtScale = sum([item[1] for item in textData])
 
     for t, s in textData:
-        font = ImageFont.truetype(fontType, 30)
+        font = ImageFont.truetype(fontType, fontSize or 24)
         bbox = font.getbbox(t)
 
         tWidth = bbox[2] - bbox[0]

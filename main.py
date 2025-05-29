@@ -14,7 +14,7 @@ try:
         
         name = str(input("Text:\t"))
         scale = float(input("Scale:\t"))
-        screen.display_text([[name, scale, font]])
+        screen.display_text([[name, scale]], font)
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

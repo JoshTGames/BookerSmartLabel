@@ -3,5 +3,11 @@
         "name": "Josh",
         "role": "Stock Control"
     },
-    "default-font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+    "text":{
+        "font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "sizing":{
+            "h1": 30,
+            "h2": 24
+        }
+    }
 }

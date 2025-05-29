@@ -8,6 +8,9 @@ if os.path.exists(libdir):
 from waveshare_epd import epd2in13_V4
 from PIL import Image, ImageDraw, ImageFont
 
+from lib import json
+fontSettings = json.ReadFile(os.getcwd() + '/settings.json')['text']
+
 epd = None
 epdName = "epd2\"13V4"
 try:
@@ -25,51 +28,24 @@ WIDTH, HEIGHT = epd.width, epd.height
 
 
 
-def display_text(textData: List[Tuple[str, float]], fontType, fontSize = None):
+def display_text(textData: List[Tuple[str, str]]):
     """
     Distributes text on the 2"13V4 waveshare screen
 
     Parameters:
-    textData (array): [[string, float, string],...] - text, scale between 0-1, fontType
-    padding (float): Distance away from screen border
-    spacing (float): Distance away from other elements
+    textData (array): [[string, string],...] - text, fontStyle
     """
     image = Image.new('1', (HEIGHT, WIDTH), 255)
     draw = ImageDraw.Draw(image)
     
-    txtScale = sum([item[1] for item in textData])
+    for txt, sizing in textData:
+        font = ImageFont.truetype(fontSettings['font'], fontSettings['sizing'][sizing])
+        bbox = font.getbbox(txt)
 
-    for t, s in textData:
-        font = ImageFont.truetype(fontType, fontSize or 24)
-        bbox = font.getbbox(t)
-
-        tWidth = bbox[2] - bbox[0]
         tHeight = (bbox[3] - bbox[1]) / 2
 
-        h: int = (s / txtScale) * HEIGHT #
-        w: int = (WIDTH - tWidth) // 2 # Centers on X-axis
 
-        draw.text((HEIGHT//2, ((WIDTH//2) * 0) + tHeight), t, font=font, fill=0, anchor="mm", align="center")
-
-
-
-
-    # yStart = 0
-    # y = yStart
-    
-    # for txt, scl in textData:        
-        # maxH = int((scl / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
-        # maxW = int(WIDTH / len(txt))
-        # size = min(maxH, maxW)
-        
-        # font = ImageFont.truetype(fontType, size)
-
-        # bbox = draw.textbbox((0, 0), txt, font=font)
-
-        # y += bbox[3] - bbox[1] # Get text height
-        # x = (WIDTH - (bbox[2] - bbox[0])) // 2 # Center horizontal
-
-        # draw.text((x, y), txt, font=font, fill=0)
+        draw.text((HEIGHT//2, ((WIDTH//2) * 0) + tHeight), txt, font=font, fill=0, anchor="mm", align="center")
 
     clear()
     epd.display_fast(epd.getbuffer(image))

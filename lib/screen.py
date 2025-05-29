@@ -38,8 +38,9 @@ def display_text(textData: List[Tuple[str, str]], spacing: float):
     """
     image = Image.new('1', (HEIGHT, WIDTH), 255)
     draw = ImageDraw.Draw(image)
-
-    height = 0
+    
+    heights = []
+    total_height = 0
     
     for txt, sizing in textData:
         font = ImageFont.truetype(fontSettings['font'], fontSettings['sizing'][sizing])
@@ -47,8 +48,24 @@ def display_text(textData: List[Tuple[str, str]], spacing: float):
         
         tH = (bbox[3] - bbox[1])
 
-        draw.text((HEIGHT//2, ((WIDTH//2) * 0) + (height + tH / 2)), txt, font=font, fill=0, anchor="mm", align="center")
-        height += tH + spacing
+        heights.append(txt, font, tH)
+        total_height += tH
+    
+    total_spacing = spacing * (len(heights) - 1) if len(heights) > 1 else 0
+    content_height = total_height + total_spacing
+
+    y_start = (WIDTH - content_height) // 2
+
+    y_cursor = y_start
+
+    for txt, font, tH in heights:
+        draw.text((HEIGHT//2, y_cursor + tH // 2), txt, font=font, fill=0, anchor="mm", align="center")
+        y_cursor += tH + spacing
+
+    # draw.text((HEIGHT//2, ((WIDTH//2) * 0) + (height + tH / 2)), txt, font=font, fill=0, anchor="mm", align="center")
+
+
+    # height += tH + spacing
 
     clear()
     epd.display_fast(epd.getbuffer(image))

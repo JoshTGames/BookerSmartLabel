@@ -25,7 +25,7 @@ WIDTH, HEIGHT = epd.width, epd.height
 
 
 
-def display_text(textData: List[Tuple[str, float, str]], padding: float, spacing: float):
+def display_text(textData: List[Tuple[str, float, str]], padding: float = 0, spacing: float = 0):
     """
     Distributes text on the 2"13V4 waveshare screen
 

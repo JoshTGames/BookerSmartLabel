@@ -40,7 +40,7 @@ def display_text(textData: List[Tuple[str, float]], fontType):
     txtScale = sum([item[1] for item in textData])
 
     for t, s in textData:
-        font = ImageFont.truetype(fontType, 24)
+        font = ImageFont.truetype(fontType, 20)
         bbox = font.getbbox(t)
 
         tWidth = bbox[2] - bbox[0]

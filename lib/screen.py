@@ -42,8 +42,13 @@ def display_text(textData: List[Tuple[str, float, str]]):
     y = yStart
     
     for txt, scl, fnt in textData:        
-        size = int(((scl * 0.1) / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
+
+        maxH = int((scl / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
+        maxW = int(WIDTH / len(txt))
+        size = min(maxH, maxW)
+        
         font = ImageFont.truetype(fnt, size)
+        
         bbox = draw.textbbox((0, 0), txt, font=font)
 
         y += bbox[3] - bbox[1] # Get text height

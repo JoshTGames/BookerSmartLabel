@@ -6,8 +6,9 @@
     "text":{
         "font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
         "sizing":{
-            "h1": 30,
-            "h2": 24
+            "h1": 40,
+            "h2": 30,
+            "h3": 24
         }
     }
 }

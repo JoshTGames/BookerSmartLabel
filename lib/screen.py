@@ -48,7 +48,7 @@ def display_text(textData: List[Tuple[str, str]], spacing: float):
         
         tH = (bbox[3] - bbox[1])
 
-        heights.append(txt, font, tH)
+        heights.append((txt, font, tH))
         total_height += tH
     
     total_spacing = spacing * (len(heights) - 1) if len(heights) > 1 else 0

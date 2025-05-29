@@ -10,9 +10,8 @@ try:
     while True:
         
         name = str(input("Text:\t"))
-        size = str(input("Styling:\t"))
-        # scale = float(input("Scale:\t"))
-        screen.display_text([[name, size], ["Stock Control", "h3"]])
+        role = str(input("Role:\t"))
+        screen.display_text([[name, "h1"], [role, "h3"]])
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

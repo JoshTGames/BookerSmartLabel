@@ -20,7 +20,7 @@ except IOError as e:
     logging.info(epdName + " failed... \n" + e)
 
 # SCREEN CONSTS
-WIDTH, HEIGHT = epd.width, epd.height
+HEIGHT, WIDTH = epd.width, epd.height
 
 
 
@@ -48,7 +48,7 @@ def display_text(textData: List[Tuple[str, float]], fontType):
         h: int = (s / txtScale) * HEIGHT #
         w: int = (WIDTH - tWidth) // 2 # Centers on X-axis
 
-        draw.text((HEIGHT//2, (WIDTH//2) * 0), t, font=font, fill=0, anchor="mm", align="center")
+        draw.text((WIDTH//2, (HEIGHT//2) * 0), t, font=font, fill=0, anchor="mm", align="center")
 
 
 

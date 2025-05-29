@@ -20,7 +20,7 @@ except IOError as e:
     logging.info(epdName + " failed... \n" + e)
 
 # SCREEN CONSTS
-WIDTH, HEIGHT = epd.height, epd.width
+WIDTH, HEIGHT = epd.width, epd.height
 
 
 

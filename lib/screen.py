@@ -45,11 +45,10 @@ def display_text(textData: List[Tuple[str, float]], fontType):
 
         tWidth = bbox[2] - bbox[0]
 
-        # h: int = (s / txtScale) * HEIGHT #
-        h =0
+        h: int = (s / txtScale) * HEIGHT #
         w: int = (WIDTH - tWidth) // 2 # Centers on X-axis
 
-        draw.text((w,h), t, font=font, fill=0, anchor="mm", align="center")
+        draw.text((0, h), t, font=font, fill=0, anchor="mm", align="center")
 
 
 

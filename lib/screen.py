@@ -42,7 +42,7 @@ def display_text(textData: List[Tuple[str, float, str]]):
     y = yStart
     
     for txt, scl, fnt in textData:        
-        size = int(((scl * 0.01) / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
+        size = int(((scl * 0.1) / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
         font = ImageFont.truetype(fnt, size)
         bbox = draw.textbbox((0, 0), txt, font=font)
 

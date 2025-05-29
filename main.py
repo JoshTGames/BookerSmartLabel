@@ -8,7 +8,15 @@ from lib import screen, json
 settings = json.ReadFile(os.getcwd() + '/settings.json')
 font = settings['default-font']
 
-screen.display_text([["Joshua", 1, font], ["Stock Control", 0.75, font]])
+
+try:
+    while True:
+        screen.clear()
+        name = str(input("Text:\t"))
+        screen.display_text([[name, 1, font]])
+except KeyboardInterrupt:
+    screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
+    exit()
 
 # try:
 

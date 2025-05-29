@@ -40,8 +40,9 @@ def display_text(textData: List[Tuple[str, float, str]]):
     txtScale = sum([item[1] for item in textData])
     yStart = 0
     y = yStart
+    
     for txt, scl, fnt in textData:        
-        size = int((scl / txtScale) * (HEIGHT)) # Scales the text proportionately to the screen height
+        size = int((scl / txtScale) * HEIGHT) # Scales the text proportionately to the screen height
         font = ImageFont.truetype(fnt, size)
 
         bbox = draw.textbbox((0, 0), txt, font=font)
@@ -51,7 +52,7 @@ def display_text(textData: List[Tuple[str, float, str]]):
 
         draw.text((y, x), txt, font=font, fill=0)
 
-    # epd.init_fast()
+    clear()
     epd.display_fast(epd.getbuffer(image))
 
 

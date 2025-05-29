@@ -11,9 +11,10 @@ font = settings['default-font']
 
 try:
     while True:
-        screen.clear()
+        
         name = str(input("Text:\t"))
-        screen.display_text([[name, .01, font]])
+        scale = int(input("Scale:\t"))
+        screen.display_text([[name, scale, font]])
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

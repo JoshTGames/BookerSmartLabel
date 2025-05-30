@@ -1,10 +1,5 @@
 import sys, os, time
-# DISABLE WARNINGS
-os.environ["PYTHONUNBUFFERED"] = "1"
-os.environ["ALSA_NO_WARNINGS"] = "1"
 
-import speech_recognition as sr
-recognizer = sr.Recognizer()
 
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
@@ -12,26 +7,39 @@ if os.path.exists(libdir):
 
 from lib import screen
 
+import sounddevice as sd
+import queue
+import json
+from vosk import Model, KaldiRecognizer
+
+# Load Vosk Model
+model_path = "vosk-model-small-en-us-0.15"
+model = Model(model_path)
+recognizer = KaldiRecognizer(model, 16000)
+
+# Create an audio queue
+q = queue.Queue()
+
+# Callback function for audio recording
+def callback(indata, frames, time, status):
+    if status:
+        print(status, flush=True)
+    q.put(indata[:])
+
 try:
-    while True:
-        
-        # name = str(input("Text:\t"))
-        # role = str(input("Role:\t"))
-        # screen.display_text([[input("Text:\t"), "h1"], [input("Role:\t"), "h3"], [input("Role:\t"), "h3"]], 10)
+    with sd.RawInputStream(samplerate=16000, blocksize=8000, dtype="float32",
+                       channels=1, callback=callback):
+        print("Listening... Speak now.")
+        while True:
+            data = q.get()
+            if recognizer.AcceptWaveform(data):
+                result = json.loads(recognizer.Result())
+                screen.display_text([[result["text"]], "h3"]], 10)
+                print("You said:", result["text"])
+            # name = str(input("Text:\t"))
+            # role = str(input("Role:\t"))
+            # screen.display_text([[input("Text:\t"), "h1"], [input("Role:\t"), "h3"], [input("Role:\t"), "h3"]], 10)
 
-        with sr.Microphone(device_index=0) as source:
-            print("Listening... Speak now.")
-            recognizer.adjust_for_ambient_noise(source)
-            audio = recognizer.listen(source)
-
-        try:
-            text = recognizer.recognize_google(audio)
-            screen.display_text([[text, "h1"]], 0)
-            print("You said:", text)
-        except sr.UnknownValueError:
-            print("Sorry, I couldn't understand that.\t")
-        except sr.RequestError:
-            print("Could not request results from Google Speech Recognition service.")
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

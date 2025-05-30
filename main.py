@@ -1,4 +1,7 @@
 import sys, os, time
+# DISABLE WARNINGS
+os.environ["PYTHONUNBUFFERED"] = "1"
+os.environ["ALSA_NO_WARNINGS"] = "1"
 
 import speech_recognition as sr
 recognizer = sr.Recognizer()

@@ -1,5 +1,8 @@
 import sys, os, time
 
+import speech_recognition as sr
+recognizer = sr.Recognizer()
+
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
@@ -11,7 +14,21 @@ try:
         
         # name = str(input("Text:\t"))
         # role = str(input("Role:\t"))
-        screen.display_text([[input("Text:\t"), "h1"], [input("Role:\t"), "h3"], [input("Role:\t"), "h3"]], 10)
+        # screen.display_text([[input("Text:\t"), "h1"], [input("Role:\t"), "h3"], [input("Role:\t"), "h3"]], 10)
+
+        with sr.Microphone(device_index=0) as source:
+            print("Listening... Speak now.")
+            recognizer.adjust_for_ambient_noise(source)
+            audio = recognizer.listen(source)
+
+        try:
+            text = recognizer.recognize_google(audio)
+            screen.display_text([[text, "h1"]], 0)
+            print("You said:", text)
+        except sr.UnknownValueError:
+            print("Sorry, I couldn't understand that.\t")
+        except sr.RequestError:
+            print("Could not request results from Google Speech Recognition service.")
 except KeyboardInterrupt:
     screen.epd2in13_V4.epdconfig.module_exit(cleanup=True)
     exit()

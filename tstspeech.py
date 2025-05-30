@@ -33,7 +33,7 @@ q = queue.Queue()
 def callback(indata, frames, time, status):
     if status:
         print(status, flush=True)
-    q.put(indata.copy())
+    q.put(indata[:])
 
 # Start the microphone stream
 with sd.RawInputStream(samplerate=16000, blocksize=8000, dtype="int16",

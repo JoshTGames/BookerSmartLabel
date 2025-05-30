@@ -34,7 +34,7 @@ try:
             data = q.get()
             if recognizer.AcceptWaveform(data):
                 result = json.loads(recognizer.Result())
-                screen.display_text([[result["text"]], "h3"]], 10)
+                screen.display_text([[result["text"], "h3"]], 10)
                 print("You said:", result["text"])
             # name = str(input("Text:\t"))
             # role = str(input("Role:\t"))

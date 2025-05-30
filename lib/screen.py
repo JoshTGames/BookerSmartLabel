@@ -61,12 +61,7 @@ def display_text(textData: List[Tuple[str, str]], spacing: float):
     for txt, font, tH in heights:
         draw.text((HEIGHT//2, y_cursor + tH // 2), txt, font=font, fill=0, anchor="mm", align="center")
         y_cursor += tH + spacing
-
-    # draw.text((HEIGHT//2, ((WIDTH//2) * 0) + (height + tH / 2)), txt, font=font, fill=0, anchor="mm", align="center")
-
-
-    # height += tH + spacing
-
+        
     clear()
     epd.display_fast(epd.getbuffer(image))
 

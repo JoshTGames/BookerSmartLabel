@@ -16,7 +16,7 @@ with sr.Microphone(device_index=0) as source:
 try:
     text = recognizer.recognize_google(audio)
     print("You said:", text)
-except sr.UnknownValueError:
-    print("Sorry, I couldn't understand that.")
+except sr.UnknownValueError as e:
+    print("Sorry, I couldn't understand that.\t"+ e)
 except sr.RequestError:
     print("Could not request results from Google Speech Recognition service.")

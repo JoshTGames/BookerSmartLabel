@@ -36,7 +36,7 @@ def callback(indata, frames, time, status):
     q.put(indata[:])
 
 # Start the microphone stream
-with sd.RawInputStream(samplerate=16000, blocksize=8000, dtype="float32",
+with sd.RawInputStream(samplerate=16000, blocksize=8000, dtype="int16",
                        channels=1, callback=callback):
     print("Listening... Speak now.")
 

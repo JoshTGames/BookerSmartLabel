@@ -1,3 +1,11 @@
+# import command_handler
+# MANAGER : command_handler.CommandHandler = command_handler.CommandHandler()
+
+
+# while True:
+#     cmd = str(input("Command:\t")).split()
+#     MANAGER.execute(cmd[0], *cmd[1:])
+
 import sys, os, time
 
 
@@ -52,12 +60,12 @@ except KeyboardInterrupt:
 #     epd.init_fast()
 #     epd.Clear()
 #     # font = ImageFont.load_default()
-#     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
+#     font = ImageFont.truetype("p/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
 
 #     debugText = "Hello Booker! >:D\nI am the smart tag"
 
 #     # Create a blank image
-#     image = Image.new('1', (epd.height, epd.width), 255)
+#     image = Image.new('1', (epd.heig ht, epd.width), 255)
 #     draw = ImageDraw.Draw(image)
 
 #     bbox = draw.textbbox((0,0), debugText, font=font)

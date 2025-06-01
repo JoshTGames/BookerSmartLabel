@@ -1,5 +1,7 @@
 import sys, os, logging
 from typing import List, Tuple
+import threading
+
 
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
@@ -10,6 +12,13 @@ from PIL import Image, ImageDraw, ImageFont
 
 from lib import json
 fontSettings = json.ReadFile(os.getcwd() + '/settings.json')['text']
+
+display_lock = threading.Lock()
+def update_display(img):
+    with display_lock:
+        clear()
+        epd.display_fast(epd.getbuffer(img))
+        
 
 epd = None
 epdName = "epd2\"13V4"

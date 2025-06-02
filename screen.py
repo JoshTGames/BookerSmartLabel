@@ -239,7 +239,7 @@ class Screen:
 
         settings = json.read_file(os.getcwd() + '/settings.json')['text']
 
-        self.TEXT = Text(settings.font, settings.sizing)
+        self.TEXT = Text(settings['font'], settings['sizing'])
 
         try:
             self.init(False, True)

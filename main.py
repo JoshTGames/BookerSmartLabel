@@ -1,7 +1,11 @@
-import command_handler
+import command_handler, screen
 MANAGER : command_handler.CommandHandler = command_handler.CommandHandler()
+SCREEN : screen.Screen = screen.Screen()
+
+# Start thread for speech recog...
 
 
+# CMDLINE
 while True:
     cmd = str(input("Command:\t")).split()
     MANAGER.execute(cmd[0], *cmd[1:])

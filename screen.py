@@ -1,0 +1,299 @@
+
+# def display_text(textData: List[Tuple[str, str]], spacing: float):
+#     """
+#     Distributes text on the 2"13V4 waveshare screen
+
+#     Parameters:
+#     textData (array): [[string, string],...] - text, fontStyle
+#     spacing (float): distance between element
+#     """
+#     image = Image.new('1', (HEIGHT, WIDTH), 255)
+#     draw = ImageDraw.Draw(image)
+    
+#     heights = []
+#     total_height = 0
+    
+#     for txt, sizing in textData:
+#         font = ImageFont.truetype(fontSettings['font'], fontSettings['sizing'][sizing])
+#         bbox = font.getbbox(txt)
+        
+#         tH = (bbox[3] - bbox[1])
+
+#         heights.append((txt, font, tH))
+#         total_height += tH
+    
+#     total_spacing = spacing * (len(heights) - 1) if len(heights) > 1 else 0
+#     content_height = total_height + total_spacing
+
+#     y_start = (WIDTH - content_height) // 2
+
+#     y_cursor = y_start
+
+#     for txt, font, tH in heights:
+#         draw.text((HEIGHT//2, y_cursor + tH // 2), txt, font=font, fill=0, anchor="mm", align="center")
+#         y_cursor += tH + spacing
+        
+#     clear()
+#     epd.display_fast(epd.getbuffer(image))
+
+
+
+# from PIL import Image, ImageDraw, ImageFont
+# from typing import List, Tuple
+
+# def display_text(
+#     textData: List[Tuple[str, str]], spacing: float, mode: str = "wrap"
+# ):
+#     """Displays text with wrapping or font resizing
+
+#     Parameters:
+#     textData (List[Tuple[str, str]]): [(text, fontStyle)] pairs
+#     spacing (float): Distance between lines
+#     mode (str): "wrap" for multi-line text, "resize" for shrinking font
+#     """
+#     image = Image.new("1", (HEIGHT, WIDTH), 255)
+#     draw = ImageDraw.Draw(image)
+    
+#     heights = []
+#     total_height = 0
+    
+#     for txt, sizing in textData:
+#         font = ImageFont.truetype(fontSettings["font"], fontSettings["sizing"][sizing])
+        
+#         # Wrap text if mode is "wrap"
+#         if mode == "wrap":
+#             wrapped_lines = wrap_text(txt, font, HEIGHT)
+#             heights.extend([(line, font) for line in wrapped_lines])
+#         else:  # Resize text if mode is "resize"
+#             font = adjust_font_size(txt, font, HEIGHT)
+#             heights.append((txt, font))
+    
+#     total_height = sum(font.getsize(txt)[1] for txt, font in heights) + spacing * (len(heights) - 1)
+#     y_cursor = (WIDTH - total_height) // 2
+    
+#     for txt, font in heights:
+#         draw.text((HEIGHT // 2, y_cursor), txt, font=font, fill=0, anchor="mm", align="center")
+#         y_cursor += font.getsize(txt)[1] + spacing
+    
+#     clear()
+#     epd.display_fast(epd.getbuffer(image))
+
+# def wrap_text(text, font, max_width):
+#     """Breaks text into multiple lines if it exceeds max width"""
+#     words = text.split(" ")
+#     lines = []
+#     current_line = ""
+
+#     for word in words:
+#         test_line = f"{current_line} {word}".strip()
+#         if font.getsize(test_line)[0] > max_width:
+#             lines.append(current_line)
+#             current_line = word
+#         else:
+#             current_line = test_line
+
+#     if current_line:
+#         lines.append(current_line)
+
+#     return lines
+
+# def adjust_font_size(text, font, max_width):
+#     """Reduces font size until text fits within max width"""
+#     size = font.size
+#     while font.getsize(text)[0] > max_width and size > 5:
+#         size -= 1
+#         font = ImageFont.truetype(fontSettings["font"], size)
+#     return font
+
+
+
+
+import threading, queue, sys, os, logging
+libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
+if os.path.exists(libdir):
+    sys.path.append(libdir)
+
+from lib import json
+
+from waveshare_epd import epd2in13_V4
+from PIL import Image, ImageDraw, ImageFont
+
+from typing import Tuple
+
+class Text:
+    """Used to manipulate text more appropriately for EPD screens"""
+
+    instance = None
+
+    def __get_size(font, text):
+        """Calculates width/height of parsed text
+            Args:
+                font (ImageFont): The font we are wanting to use
+                text (str): The text we are querying
+
+            Returns:
+                width, height (Tuple(int, int)): width & height of screen
+        """
+        bbox = font.getbbox(text)
+        return bbox[2] - bbox[1], bbox[3] - bbox[0]
+
+    def __init__(self, font_path: str, sizing_sheet: dict[str, int]):
+        self.font_path = font_path
+        self.sizing_sheet = sizing_sheet
+        self.anchor_interface = {
+            "center": "mm",
+            "left": "lm",
+            "right": "rm"
+        }
+        Text.instance = self
+
+    def create_wrapper(self, size: Tuple[int, int], mode: str, spacing: int, *text: Tuple[str, str, str]) -> Image:
+        """Creates a wrapper to design the text image to be displayed onto the screen
+            Args:
+                size (Tuple[int, int]): width/height of wrapper
+                mode (str): scale/wrap
+                spacing (int): space between each line
+                *text (Tuple[str, str, str]): Text, font size (h1/h2/h3...), Alignment (center/left/right)
+            
+            Returns:
+                Image: Visual to be presented onto the screen
+        """
+        WIDTH: int = size[0]
+        HEIGHT: int = size[1]
+
+        image = Image.new("1", (WIDTH, HEIGHT), 255)
+        draw = ImageDraw.Draw(image)
+
+        heights: Tuple[ImageFont, str, str, int] = [] # Font, txt, alignment, height
+        total_height = 0
+
+        match(mode):
+            case "scale":
+                
+                for t, s, a in text:
+                    desired_size: int = self.sizing_sheet[s]
+                    font: ImageFont = ImageFont.truetype(self.font_path, desired_size)
+                    font = self.__adjust_for_width(font, desired_size, WIDTH, t)
+
+                    _, h = Text.__get_size(font, t)
+
+                    heights.append((t, font, a, h))
+                    total_height += h
+
+            # case "wrap":
+
+        total_spacing = spacing * (len(heights) - 1) if len(heights) > 1 else 0
+        content_height = total_height + total_spacing
+
+        y_start = (WIDTH - content_height) // 2
+
+        y_cursor = y_start
+
+        for f, t, a, h in heights:
+            draw.text((HEIGHT//2, y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)
+            y_cursor += h + spacing
+        return image
+        
+    
+    
+    def __adjust_for_width(self, font: ImageFont, desired_font_size: int, max_width: int, *text: str) -> ImageFont:
+        """Calculates a size for the text so it will all fit within the width of the screen
+            Args:
+                font (ImageFont): The font we are using
+                desired_font_size (int): The desired font size we are wanting
+                max_width (int): The max width the text is allowed to fit within
+                *text (List(str)): A list of text we are wanting to account for
+        """
+        
+        final_size = desired_font_size
+        for x in text:
+            x_size = desired_font_size
+            x_font = font
+
+            width, _ = Text.__get_size(x_font, x)
+            while width > max_width and x_size > 1:
+                x_size -= 1
+                x_font = ImageFont.truetype(x_font.path, x_size)
+            
+            # If x_size is less than size, apply
+            final_size = x_size if x_size < final_size else final_size 
+        return ImageFont.truetype(self.font_path, final_size)
+
+
+
+class Screen:
+    """Class to manage our screen"""
+
+    display_lock = threading.Lock()
+    instance = None
+
+    def __init__(self):
+        """Constructor for our screen"""
+        self.EPD = epd2in13_V4.EPD()
+        self.EPD_VERSION = "EPD2\"13V4"
+        self.WIDTH, self.HEIGHT = self.EPD.width, self.EPD.height
+
+        self.running = True
+        self.sleeping = False
+        self.display_queue = queue.Queue()
+        self.TEXT = Text(json.ReadFile(os.getcwd() + '/settings.json')['text'])
+
+        try:
+            self.init(False, True)
+            self.log("Display Active!")
+        except IOError as e:
+            self.log(f"Display Failed!\n{e}")
+            return
+
+        self.thread = threading.Thread(target=self.__display_async, daemon=True)
+        self.thread.start()
+
+        Screen.instance = self
+
+    def __display_async(self):
+        """Runs asyncronously on a thread"""
+        while self.running:
+            image = self.display_queue.get(block=True)
+            if(self.sleeping):
+                self.init(False, True)
+
+            with Screen.display_lock:
+                self.clear()
+                self.EPD.display(image)
+                if(self.display_queue.empty()):
+                    self.sleep()
+
+    def set(self, img) -> None:
+        """Presents a visual to the screen - Adds image to queue to be presented"""
+        self.display_queue.put(img)
+
+    #--- Helpful methods
+    def __log(self, msg: str): 
+        """Logs to console
+        Args:
+            msg (str): Message to output to console
+        """
+        logging.info(f"{self.EPD_VERSION}: {msg}")
+
+    def init(self, fast: bool = False, clean: bool = False) -> None:
+        """Awakes the screen -- Not threaded on its own
+        Args:
+            fast (bool): Do we want a soft/hard initialisation?
+            clean (bool): Do we want to clean the screen after initialisation?
+        """
+
+        _ = self.EPD.init_fast() if fast else self.EPD.init() # Conditional init based on if we want it fast or not
+        self.sleeping = False
+        if(clean):
+            self.clear()
+
+    def clear(self) -> None:
+        """Clears the screen -- Not threaded on its own"""
+        self.__log("Clearing...")
+        self.EPD.Clear()
+
+    def sleep(self) -> None:
+        """Puts screen in power saving mode -- Not threaded on its own"""
+        self.__log("Sleeping...")
+        self.EPD.sleep()
+        self.sleeping = True

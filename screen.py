@@ -243,9 +243,9 @@ class Screen:
 
         try:
             self.init(False, True)
-            self.log("Display Active!")
+            self.__log("Display Active!")
         except IOError as e:
-            self.log(f"Display Failed!\n{e}")
+            self.__log(f"Display Failed!\n{e}")
             return
 
         self.thread = threading.Thread(target=self.__display_async, daemon=True)

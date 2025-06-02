@@ -1,6 +1,7 @@
 import os, importlib, inspect, commands.command_base as command_base
 
 class CommandCache:
+    """Means of carrying out a command again in the future"""
     def __init__(self, command, *args, **kwargs):
         self.command = command
         self.args = args

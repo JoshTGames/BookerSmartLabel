@@ -15,6 +15,7 @@ fontSettings = json.ReadFile(os.getcwd() + '/settings.json')['text']
 
 display_lock = threading.Lock()
 def update_display(img):
+    """Displays to the screen"""
     with display_lock:
         clear()
         epd.display_fast(epd.getbuffer(img))

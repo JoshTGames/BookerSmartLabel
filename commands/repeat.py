@@ -11,7 +11,7 @@ class Locate(command_base.Command):
     def run(self, *args, **kwargs):
         rslt = super().run(*args, **kwargs)
         cache: ch.CommandCache = ch.CommandHandler.lastCommand 
-        if(cache is None or cache.command == self): return rslt
+        if(cache is None or cache.command == self): return False
         
         cache.command.run(*cache.args, *cache.kwargs)
         return rslt

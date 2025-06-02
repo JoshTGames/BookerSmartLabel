@@ -236,7 +236,7 @@ class Screen:
         self.running = True
         self.sleeping = False
         self.display_queue = queue.Queue()
-        self.TEXT = Text(json.ReadFile(os.getcwd() + '/settings.json')['text'])
+        self.TEXT = Text(json.read_file(os.getcwd() + '/settings.json')['text'])
 
         try:
             self.init(False, True)

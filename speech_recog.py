@@ -19,6 +19,12 @@ class SpeechRecognition:
         self.data = Q()
         self.settings = j.read_file(os.getcwd() + '/settings.json')['speech']
 
+        self.model = Model(SpeechRecognition.MODEL_PATH)
+        self.recogniser = KaldiRecognizer(self.model, SpeechRecognition.RATE) 
+        
+        self.wakeword = self.settings['wake-word']
+        self.wake_detected = False # If true, start listening
+
         # Runs the listener on a separate thread
         listen_thread = Thread(target=self.__listener, daemon=True)
         listen_thread.start()
@@ -38,21 +44,17 @@ class SpeechRecognition:
                 time.sleep(0.1)
 
     def __process(self):
-        model = Model(SpeechRecognition.MODEL_PATH)
-        recogniser = KaldiRecognizer(model, SpeechRecognition.RATE) 
         
-        wakeword = self.settings['wake-word']
-        wake_detected = False # If true, start listening
         
 
         while True:
             data = self.data.get(block=True)
-            if recogniser.AcceptWaveform(data):
-                rslt = recogniser.Result()
+            if self.recogniser.AcceptWaveform(data):
+                rslt = self.recogniser.Result()
                 text = rslt.split('"')[3]
 
 
-                if not wake_detected and wakeword in text.lower():
+                if not wake_detected and self.wakeword in text.lower():
                     # CHANGE SCREEN TO LISTENING
                     s.instance.set_text(0, ("Listening...", "h2", "center"))
                     wake_detected = True
@@ -61,5 +63,6 @@ class SpeechRecognition:
                 if wake_detected:
                     print(f"Recognised: {text}")
                     message = text.split()
+                    print(ch.instance)
                     ch.instance.execute(message[0], *message[1:])
                     wake_detected = False

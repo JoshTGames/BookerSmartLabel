@@ -3,7 +3,6 @@ from queue import Queue as Q
 from threading import Thread
 from vosk import Model, KaldiRecognizer
 from ovos_ww_plugin_vosk import VoskWakeWordPlugin
-from ovos_classifiers.phonemizer import Phonemizer
 
 import json_manager as j
 
@@ -37,9 +36,7 @@ class SpeechRecognition:
         model = Model(SpeechRecognition.MODEL_PATH)
         recogniser = KaldiRecognizer(model, SpeechRecognition.RATE) 
         
-        ph = Phonemizer()
-        wake_phonemes = ph.phonemize(self.settings['wake-word'])
-
+        wakeword = VoskWakeWordPlugin(self.settings['wake-word'], debug=True, rule="equals")
         wake_detected = False # If true, start listening
         
 
@@ -49,9 +46,8 @@ class SpeechRecognition:
                 rslt = recogniser.Result()
                 text = rslt.split('"')[3]
 
-                rt_phonemes = Phonemizer.phonemize(text)
 
-                if not wake_detected and wake_phonemes in rt_phonemes:
+                if not wake_detected and wakeword.match(text):
                     # CHANGE SCREEN TO LISTENING
                     wake_detected = True
                     continue

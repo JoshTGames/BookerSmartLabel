@@ -88,9 +88,10 @@ class Text:
         bbox = font.getbbox(text)
         return bbox[2] - bbox[1], bbox[3] - bbox[0]
 
-    def __init__(self, font_path: str, sizing_sheet: dict[str, int]):
-        self.font_path = font_path
-        self.sizing_sheet = sizing_sheet
+    def __init__(self, font_settings):
+        self.font_path = font_settings['font']
+        self.sizing_sheet = font_settings['sizing']
+        self.min_size = font_settings['min-size']
         self.anchor_interface = {
             "center": "mm",
             "left": "lm",
@@ -113,7 +114,6 @@ class Text:
         # For some reason, it seems waveshare flips Width/Height around. I am having to correct this in code
         WIDTH: int = size[1]
         HEIGHT: int = size[0]
-        print(f"{WIDTH}/{HEIGHT}")
         image = Image.new("1", (WIDTH, HEIGHT), 255)
         draw = ImageDraw.Draw(image)
 
@@ -161,13 +161,12 @@ class Text:
             x_size = desired_font_size
 
             width, _ = Text.__get_size(font, x)
-            while width > max_width and x_size > 1:
+            while width > max_width and x_size > self.min_size:
                 x_size -= 1
                 width, _ = Text.__get_size(ImageFont.truetype(self.font_path, x_size), x)
             
             # If x_size is less than size, apply
             final_size = x_size if x_size < final_size else final_size 
-        print(f"{final_size}/{desired_font_size}")
         return ImageFont.truetype(self.font_path, final_size)
 
 
@@ -191,7 +190,7 @@ class Screen:
 
         settings = json.read_file(os.getcwd() + '/settings.json')['text']
 
-        self.TEXT = Text(settings['font'], settings['sizing'])
+        self.TEXT = Text(settings)
 
         try:
             self.init(False, True)

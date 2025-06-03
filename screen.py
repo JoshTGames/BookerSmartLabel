@@ -175,7 +175,7 @@ class Text:
                     desired_size: int = self.sizing_sheet[s]
                     font: ImageFont = ImageFont.truetype(self.font_path, desired_size)
                     font = self.__adjust_for_width(font, desired_size, WIDTH, t)
-                    print("TESTING TEST TEST TEST")
+                    
                     _, h = Text.__get_size(font, t)
 
                     heights.append((font, t, a, h))
@@ -205,7 +205,7 @@ class Text:
                 max_width (int): The max width the text is allowed to fit within
                 *text (List(str)): A list of text we are wanting to account for
         """
-        
+        print(f"Desired size: {desired_font_size}")
         final_size = desired_font_size
         for x in text:
             x_size = desired_font_size
@@ -218,6 +218,7 @@ class Text:
             
             # If x_size is less than size, apply
             final_size = x_size if x_size < final_size else final_size 
+        print(f"Final size: {final_size}")
         return ImageFont.truetype(self.font_path, final_size)
 
 

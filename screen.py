@@ -89,9 +89,7 @@ class Text:
                     
                     _, h = Text.__get_size(font, t)
                     lines = self.__wrap_text(font, WIDTH, t)
-                    print(t)
                     for l in lines:
-                        print(l)
                         heights.append((font, l, a, h))
                         total_height += h
                         
@@ -106,7 +104,7 @@ class Text:
         y_cursor = y_start
 
         for f, t, a, h in heights:
-            draw.text((WIDTH//2, y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)
+            draw.text((WIDTH, y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)#WIDTH//2
             y_cursor += h + spacing
         return image
         
@@ -129,7 +127,6 @@ class Text:
             
             # If x_size is less than size, apply
             final_size = x_size if x_size < final_size else final_size 
-        print(f"{desired_font_size}/{final_size}")
         return ImageFont.truetype(self.font_path, final_size)
 
     def __wrap_text(self, font: ImageFont, max_width: int, text: str):

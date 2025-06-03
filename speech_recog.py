@@ -17,8 +17,7 @@ class SpeechRecognition:
     def __init__(self):
         self.data = Q()
         self.settings = j.read_file(os.getcwd() + '/settings.json')['speech']
-        os.environ["VOSK_LOG_LEVEL"] = "0"
-        
+
         # Runs the listener on a separate thread
         listen_thread = Thread(target=self.__listener, daemon=True)
         listen_thread.start()
@@ -36,6 +35,9 @@ class SpeechRecognition:
             self.data.put(data)
 
     def __process(self):
+        os.environ["VOSK_LOG_LEVEL"] = "0"
+        sys.stderr = open(os.devnull, "w")  # Completely mute logs
+        
         model = Model(SpeechRecognition.MODEL_PATH)
         recogniser = KaldiRecognizer(model, SpeechRecognition.RATE) 
         
@@ -59,6 +61,7 @@ class SpeechRecognition:
                 if wake_detected:
                     print(f"Recognised: {text}")
                     message = text.split()
+                    print(message)
                     ch.instance.execute(message[0], message[1:])
                     wake_detected = False
 

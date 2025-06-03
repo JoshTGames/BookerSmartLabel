@@ -31,7 +31,7 @@ class SpeechRecognition:
         def callback(indata, _, __, ___):
             self.data.put(indata[:])
 
-        with sd.InputStream(SpeechRecognition.RATE, channels=1, callback=callback):
+        with sd.RawInputStream(SpeechRecognition.RATE, blocksize=SpeechRecognition.CHUNK, dtype="int16", channels=1, callback=callback):
             while True:
                 time.sleep(0.1)
 

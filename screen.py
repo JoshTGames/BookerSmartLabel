@@ -58,7 +58,7 @@ class Text:
         }        
         Text.instance = self
 
-    def create_wrapper(self, size: Tuple[int, int], mode: str, spacing: int, *text: Tuple[str, str, str]) -> Image:
+    def create_wrapper(self, size: Tuple[int, int], spacing: int, *text: Tuple[str, str, str]) -> Image:
         """Creates a wrapper to design the text image to be displayed onto the screen
             Args:
                 size (Tuple[int, int]): width/height of wrapper
@@ -79,30 +79,27 @@ class Text:
         heights: List[Tuple[ImageFont, str, str, int]] = [] # Font, txt, alignment, height
         total_height = 0
 
-        match(mode):
-            case "scale":                
-                for t, s, a in text:
-                    
-                    desired_size: int = self.sizing_sheet[s]
-                    font: ImageFont = ImageFont.truetype(self.font_path, desired_size)
-                    font = self.__adjust_for_width(font, desired_size, WIDTH, t)
-                    
-                    _, h = Text.__get_size(font, t)
-                    lines = self.__wrap_text(font, WIDTH, t)
-                    for l in lines:
-                        heights.append((font, l, a, h))
-                        total_height += h
-                        
+        # Process text to reduce fontsize & wrap on a new line if needed
+        for t, s, a in text:                    
+            desired_size: int = self.sizing_sheet[s]
+            font: ImageFont = ImageFont.truetype(self.font_path, desired_size)
+            font = self.__adjust_for_width(font, desired_size, WIDTH, t)
+            
+            _, h = Text.__get_size(font, t)
+            lines = self.__wrap_text(font, WIDTH, t)
+            for l in lines:
+                heights.append((font, l, a, h))
+                total_height += h                
 
-            # case "wrap":
-
+        # Calculate spacing
         total_spacing = spacing * (len(heights) - 1) if len(heights) > 1 else 0
         content_height = total_height + total_spacing
 
+        # Pointers for managing height
         y_start = (HEIGHT - content_height) // 2
-
         y_cursor = y_start
 
+        # Converts desired alignment to a positioning on the screen 
         x_pos = {
             "center": WIDTH//2,
             "left": 0,
@@ -110,7 +107,7 @@ class Text:
         }      
 
         for f, t, a, h in heights:            
-            draw.text((x_pos[a], y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)#WIDTH//2
+            draw.text((x_pos[a], y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)
             y_cursor += h + spacing
         return image
         

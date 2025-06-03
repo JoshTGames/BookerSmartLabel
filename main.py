@@ -8,6 +8,7 @@ SPEECH : sr.SpeechRecognition = sr.SpeechRecognition(MANAGER)
 # CMDLINE
 while True:
     cmd = str(input("Command:\t")).split()
+    if(len(cmd) <= 0): continue
     MANAGER.execute(cmd[0], *cmd[1:])
 
 # import sys, os, time

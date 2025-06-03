@@ -1,22 +1,3 @@
-# def wrap_text(text, font, max_width):
-#     """Breaks text into multiple lines if it exceeds max width"""
-#     words = text.split(" ")
-#     lines = []
-#     current_line = ""
-
-#     for word in words:
-#         test_line = f"{current_line} {word}".strip()
-#         if font.getsize(test_line)[0] > max_width:
-#             lines.append(current_line)
-#             current_line = word
-#         else:
-#             current_line = test_line
-
-#     if current_line:
-#         lines.append(current_line)
-
-#     return lines
-
 import threading, sys, os
 from queue import Queue as q
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')

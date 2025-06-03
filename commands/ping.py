@@ -1,10 +1,4 @@
 import commands.command_base as command_base
-
-import os, sys
-libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
-if os.path.exists(libdir):
-    sys.path.append(libdir)
-
 import screen as s
 
 class Ping(command_base.Command):
@@ -17,6 +11,5 @@ class Ping(command_base.Command):
     def run(self, *args, **kwargs):
         rslt = super().run(*args, **kwargs)
         print("pong!")
-        screen = s.Screen.instance
-        screen.set_text(0, ("Pong!", "h1", "center"))
+        s.Screen.instance.set_text(0, ("Pong!", "h1", "center"))
         return rslt

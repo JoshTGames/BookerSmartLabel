@@ -1,7 +1,4 @@
 from abc import ABC, abstractmethod
-import logging
-
-logging.basicConfig(level=logging.INFO)
 
 class Command(ABC):
     """Base class for creating commands"""
@@ -28,4 +25,4 @@ class Command(ABC):
 
     def log(self):
         """Outputs to console command usage"""
-        logging.info(f'Executing command: {self.name}')
+        print(f'Executing command: {self.name}')

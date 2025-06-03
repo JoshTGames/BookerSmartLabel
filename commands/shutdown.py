@@ -10,5 +10,5 @@ class Shutdown(command_base.Command):
 
     def run(self, *args, **kwargs):
         rslt = super().run(*args, **kwargs)
-        os.system("sudo shutdown now -h") # May need root permission (sudo shutdown...)
+        os.system("sudo shutdown now -h")
         return rslt

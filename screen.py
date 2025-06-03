@@ -108,7 +108,8 @@
 
 
 
-import threading, queue, sys, os
+import threading, sys, os
+from queue import Queue as q
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
@@ -170,11 +171,11 @@ class Text:
         match(mode):
             case "scale":                
                 for t, s, a in text:
-                    print(t)
+                    
                     desired_size: int = self.sizing_sheet[s]
                     font: ImageFont = ImageFont.truetype(self.font_path, desired_size)
                     font = self.__adjust_for_width(font, desired_size, WIDTH, t)
-
+                    print("TESTING TEST TEST TEST")
                     _, h = Text.__get_size(font, t)
 
                     heights.append((font, t, a, h))
@@ -235,7 +236,7 @@ class Screen:
 
         self.running = True
         self.sleeping = False
-        self.display_queue = queue.Queue()
+        self.display_queue: q[Image] = q()
 
         settings = json.read_file(os.getcwd() + '/settings.json')['text']
 

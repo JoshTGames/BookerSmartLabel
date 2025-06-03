@@ -111,7 +111,7 @@ class Text:
         """
         WIDTH: int = size[0]
         HEIGHT: int = size[1]
-
+        print(f"{WIDTH}/{HEIGHT}")
         image = Image.new("1", (HEIGHT, WIDTH), 255)
         draw = ImageDraw.Draw(image)
 

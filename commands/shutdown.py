@@ -3,7 +3,7 @@ import os
 
 class Shutdown(command_base.Command):
     name: str = "shutdown"
-    description: str = "powers off the device"
+    description: str = "powers off this device"
 
     def usecase(self):
         return super().usecase()

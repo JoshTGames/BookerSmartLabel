@@ -3,6 +3,9 @@
         "name": "Josh",
         "role": "Stock Control"
     },
+    "speech":{
+        "wake-word": "hey booker"
+    },
     "text":{
         "font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
         "min-size": 10,

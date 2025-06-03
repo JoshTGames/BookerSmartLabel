@@ -1,11 +1,8 @@
 import commands.command_base as command_base
 import screen as s
 
-import os, sys
-libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
-if os.path.exists(libdir):
-    sys.path.append(libdir)
-from lib import json as j
+import os
+import json as j
 
 version = j.read_file(os.getcwd() + '/version.json')['version']
 

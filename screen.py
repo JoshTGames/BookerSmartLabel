@@ -4,7 +4,7 @@ libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
 
-from lib import json
+import json
 
 from waveshare_epd import epd2in13_V4
 from PIL import Image, ImageDraw, ImageFont
@@ -114,7 +114,12 @@ class Text:
         return ImageFont.truetype(self.font_path, final_size)
 
     def __wrap_text(self, font: ImageFont, max_width: int, text: str):
-        """"""
+        """If text exceeds the max width, it'll be spread out across multiple lines
+            Args:
+                font (ImageFont): the font being used
+                max_width (int): max width till a new line is required
+                text (str): the text we are writing to the screen
+        """
         words = text.split(" ")
         lines = []
         cur_line = ""

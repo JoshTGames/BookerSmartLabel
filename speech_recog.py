@@ -7,6 +7,13 @@ import json_manager as j
 from screen import Screen as s
 from command_handler import CommandHandler as ch
 
+# Suppress VOSK logs
+os.environ["VOSK_LOG_LEVEL"] = "0"
+
+# Suppress ALSA & other error messages
+sys.stderr = open(os.devnull, "w")
+
+
 
 class SpeechRecognition:
     RATE = 16000
@@ -35,9 +42,6 @@ class SpeechRecognition:
             self.data.put(data)
 
     def __process(self):
-        os.environ["VOSK_LOG_LEVEL"] = "0"
-        sys.stderr = open(os.devnull, "w")  # Completely mute logs
-        
         model = Model(SpeechRecognition.MODEL_PATH)
         recogniser = KaldiRecognizer(model, SpeechRecognition.RATE) 
         

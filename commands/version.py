@@ -9,8 +9,6 @@ from lib import json as j
 
 version = j.read_file(os.getcwd() + '/version.json')['version']
 
-version = j.read_file()
-
 class Version(command_base.Command):
     name: str = "version"
     description: str = "returns this software version"

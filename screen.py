@@ -37,47 +37,6 @@
 #     epd.display_fast(epd.getbuffer(image))
 
 
-
-# from PIL import Image, ImageDraw, ImageFont
-# from typing import List, Tuple
-
-# def display_text(
-#     textData: List[Tuple[str, str]], spacing: float, mode: str = "wrap"
-# ):
-#     """Displays text with wrapping or font resizing
-
-#     Parameters:
-#     textData (List[Tuple[str, str]]): [(text, fontStyle)] pairs
-#     spacing (float): Distance between lines
-#     mode (str): "wrap" for multi-line text, "resize" for shrinking font
-#     """
-#     image = Image.new("1", (HEIGHT, WIDTH), 255)
-#     draw = ImageDraw.Draw(image)
-    
-#     heights = []
-#     total_height = 0
-    
-#     for txt, sizing in textData:
-#         font = ImageFont.truetype(fontSettings["font"], fontSettings["sizing"][sizing])
-        
-#         # Wrap text if mode is "wrap"
-#         if mode == "wrap":
-#             wrapped_lines = wrap_text(txt, font, HEIGHT)
-#             heights.extend([(line, font) for line in wrapped_lines])
-#         else:  # Resize text if mode is "resize"
-#             font = adjust_font_size(txt, font, HEIGHT)
-#             heights.append((txt, font))
-    
-#     total_height = sum(font.getsize(txt)[1] for txt, font in heights) + spacing * (len(heights) - 1)
-#     y_cursor = (WIDTH - total_height) // 2
-    
-#     for txt, font in heights:
-#         draw.text((HEIGHT // 2, y_cursor), txt, font=font, fill=0, anchor="mm", align="center")
-#         y_cursor += font.getsize(txt)[1] + spacing
-    
-#     clear()
-#     epd.display_fast(epd.getbuffer(image))
-
 # def wrap_text(text, font, max_width):
 #     """Breaks text into multiple lines if it exceeds max width"""
 #     words = text.split(" ")
@@ -96,15 +55,6 @@
 #         lines.append(current_line)
 
 #     return lines
-
-# def adjust_font_size(text, font, max_width):
-#     """Reduces font size until text fits within max width"""
-#     size = font.size
-#     while font.getsize(text)[0] > max_width and size > 5:
-#         size -= 1
-#         font = ImageFont.truetype(fontSettings["font"], size)
-#     return font
-
 
 
 
@@ -162,7 +112,7 @@ class Text:
         WIDTH: int = size[0]
         HEIGHT: int = size[1]
 
-        image = Image.new("1", (WIDTH, HEIGHT), 255)
+        image = Image.new("1", (HEIGHT, WIDTH), 255)
         draw = ImageDraw.Draw(image)
 
         heights: List[Tuple[ImageFont, str, str, int]] = [] # Font, txt, alignment, height

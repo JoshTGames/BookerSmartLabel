@@ -2,7 +2,7 @@ import commands.command_base as command_base
 import screen as s
 
 import os
-import json as j
+import json_manager as j
 
 version = j.read_file(os.getcwd() + '/version.json')['version']
 

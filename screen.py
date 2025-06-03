@@ -4,7 +4,7 @@ libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
 
-import json
+import json_manager as j
 
 from waveshare_epd import epd2in13_V4
 from PIL import Image, ImageDraw, ImageFont
@@ -155,7 +155,7 @@ class Screen:
         
         self.do_log = do_log
 
-        settings = json.read_file(os.getcwd() + '/settings.json')['text']
+        settings = j.read_file(os.getcwd() + '/settings.json')['text']
 
         self.TEXT = Text(settings)
 

@@ -109,10 +109,12 @@ class Text:
             Returns:
                 Image: Visual to be presented onto the screen
         """
-        WIDTH: int = size[0]
-        HEIGHT: int = size[1]
+        
+        # For some reason, it seems waveshare flips Width/Height around. I am having to correct this in code
+        WIDTH: int = size[1]
+        HEIGHT: int = size[0]
         print(f"{WIDTH}/{HEIGHT}")
-        image = Image.new("1", (HEIGHT, WIDTH), 255)
+        image = Image.new("1", (WIDTH, HEIGHT), 255)
         draw = ImageDraw.Draw(image)
 
         heights: List[Tuple[ImageFont, str, str, int]] = [] # Font, txt, alignment, height
@@ -135,12 +137,12 @@ class Text:
         total_spacing = spacing * (len(heights) - 1) if len(heights) > 1 else 0
         content_height = total_height + total_spacing
 
-        y_start = (WIDTH - content_height) // 2
+        y_start = (HEIGHT - content_height) // 2
 
         y_cursor = y_start
 
         for f, t, a, h in heights:
-            draw.text((HEIGHT//2, y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)
+            draw.text((WIDTH//2, y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)
             y_cursor += h + spacing
         return image
         

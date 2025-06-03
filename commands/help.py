@@ -25,7 +25,6 @@ class Help(command_base.Command):
         count: int = 0
         for _, c in command_handler.CommandHandler.commands.items():
             count+=1
-            print(c)
             msg += f"{count}.{c.name} | Usage: '{c.usecase()}' | {c.description}\n"
         print(msg)
         return rslt

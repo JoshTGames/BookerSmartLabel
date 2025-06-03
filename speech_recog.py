@@ -3,8 +3,9 @@ from queue import Queue as Q
 from threading import Thread
 from vosk import Model, KaldiRecognizer
 
-import json_manager as j, screen as s
-
+import json_manager as j
+from screen import Screen as s
+from command_handler import CommandHandler as ch
 
 
 class SpeechRecognition:
@@ -16,7 +17,8 @@ class SpeechRecognition:
     def __init__(self):
         self.data = Q()
         self.settings = j.read_file(os.getcwd() + '/settings.json')['speech']
-
+        os.environ["VOSK_LOG_LEVEL"] = "0"
+        
         # Runs the listener on a separate thread
         listen_thread = Thread(target=self.__listener, daemon=True)
         listen_thread.start()
@@ -50,10 +52,13 @@ class SpeechRecognition:
 
                 if not wake_detected and wakeword in text.lower():
                     # CHANGE SCREEN TO LISTENING
-                    s.Screen.instance.set_text(0, ("Listening...", "h2", "center"))
+                    s.instance.set_text(0, ("Listening...", "h2", "center"))
                     wake_detected = True
                     continue
 
                 if wake_detected:
                     print(f"Recognised: {text}")
+                    message = text.split()
+                    ch.instance.execute(message[0], message[1:])
+                    wake_detected = False
 

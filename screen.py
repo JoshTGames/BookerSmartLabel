@@ -146,6 +146,9 @@ class Text:
                 cur_line = word
                 continue
             cur_line = tst_line
+        
+        if cur_line:
+            lines.append(cur_line)
         return lines
 
 

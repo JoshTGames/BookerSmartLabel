@@ -118,7 +118,7 @@ from lib import json
 from waveshare_epd import epd2in13_V4
 from PIL import Image, ImageDraw, ImageFont
 
-from typing import Tuple
+from typing import List, Tuple
 
 class Text:
     """Used to manipulate text more appropriately for EPD screens"""
@@ -161,18 +161,16 @@ class Text:
         WIDTH: int = size[0]
         HEIGHT: int = size[1]
 
-        print(f"{text[0]}")
-
         image = Image.new("1", (WIDTH, HEIGHT), 255)
         draw = ImageDraw.Draw(image)
 
-        heights: Tuple[ImageFont, str, str, int] = [] # Font, txt, alignment, height
+        heights: List[Tuple[ImageFont, str, str, int]] = [] # Font, txt, alignment, height
         total_height = 0
 
         match(mode):
-            case "scale":
-                
+            case "scale":                
                 for t, s, a in text:
+                    print(t)
                     desired_size: int = self.sizing_sheet[s]
                     font: ImageFont = ImageFont.truetype(self.font_path, desired_size)
                     font = self.__adjust_for_width(font, desired_size, WIDTH, t)

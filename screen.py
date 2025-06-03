@@ -108,7 +108,7 @@
 
 
 
-import threading, queue, sys, os, logging
+import threading, queue, sys, os
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
@@ -177,7 +177,7 @@ class Text:
 
                     _, h = Text.__get_size(font, t)
 
-                    heights.append((t, font, a, h))
+                    heights.append((font, t, a, h))
                     total_height += h
 
             # case "wrap":
@@ -276,7 +276,7 @@ class Screen:
         Args:
             msg (str): Message to output to console
         """
-        logging.info(f"{self.EPD_VERSION}: {msg}")
+        print(f"{self.EPD_VERSION}: {msg}")
 
     def init(self, fast: bool = False, clean: bool = False) -> None:
         """Awakes the screen -- Not threaded on its own

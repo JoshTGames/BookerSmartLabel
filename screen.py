@@ -89,8 +89,9 @@ class Text:
                     
                     _, h = Text.__get_size(font, t)
                     lines = self.__wrap_text(font, WIDTH, t)
-                    
+                    print(t)
                     for l in lines:
+                        print(l)
                         heights.append((font, l, a, h))
                         total_height += h
                         

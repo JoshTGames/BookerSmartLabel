@@ -177,7 +177,6 @@ class Text:
                     font = self.__adjust_for_width(font, desired_size, WIDTH, t)
                     
                     _, h = Text.__get_size(font, t)
-                    print(h)
                     heights.append((font, t, a, h))
                     total_height += h
 
@@ -261,7 +260,7 @@ class Screen:
 
             with Screen.display_lock:
                 self.clear()
-                self.EPD.display(image)
+                self.EPD.display(self.EPD.getbuffer(image))
                 if(self.display_queue.empty()):
                     self.sleep()
 

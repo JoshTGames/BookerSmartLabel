@@ -2,7 +2,6 @@ import sys, os, pyaudio
 from queue import Queue as Q
 from threading import Thread
 from vosk import Model, KaldiRecognizer
-from ovos_ww_plugin_vosk import VoskWakeWordPlugin
 
 import json_manager as j
 
@@ -36,7 +35,7 @@ class SpeechRecognition:
         model = Model(SpeechRecognition.MODEL_PATH)
         recogniser = KaldiRecognizer(model, SpeechRecognition.RATE) 
         
-        wakeword = VoskWakeWordPlugin(self.settings['wake-word'])
+        wakeword = self.settings['wake-word']
         wake_detected = False # If true, start listening
         
 
@@ -47,7 +46,7 @@ class SpeechRecognition:
                 text = rslt.split('"')[3]
 
 
-                if not wake_detected:# and wakeword.match(text):
+                if not wake_detected and wakeword in text.lower():
                     # CHANGE SCREEN TO LISTENING
                     wake_detected = True
                     continue

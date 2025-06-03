@@ -3,7 +3,9 @@ from queue import Queue as Q
 from threading import Thread
 from vosk import Model, KaldiRecognizer
 
-import json_manager as j
+import json_manager as j, screen as s
+
+
 
 class SpeechRecognition:
     RATE = 16000
@@ -48,6 +50,7 @@ class SpeechRecognition:
 
                 if not wake_detected and wakeword in text.lower():
                     # CHANGE SCREEN TO LISTENING
+                    s.Screen.instance.set_text(0, ("Listening...", "h2", "center"))
                     wake_detected = True
                     continue
 

@@ -43,7 +43,6 @@ class Text:
         """Creates a wrapper to design the text image to be displayed onto the screen
             Args:
                 size (Tuple[int, int]): width/height of wrapper
-                mode (str): scale/wrap
                 spacing (int): space between each line
                 *text (Tuple[str, str, str]): Text, font size (h1/h2/h3...), Alignment (center/left/right)
             
@@ -185,7 +184,11 @@ class Screen:
                     self.sleep()
 
     def set_text(self, spacing: int = 10, *text: Tuple[str, str, str]) -> None:
-        """Presents a visual to the screen - Adds image to queue to be presented"""
+        """Presents a visual to the screen - Adds image to queue to be presented
+            Args:
+                spacing (int): space between each line
+                *text (Tuple[str, str, str]): Text, font size (h1/h2/h3...), Alignment (center/left/right)
+        """
         self.display_queue.put(self.TEXT.create_wrapper((self.WIDTH, self.HEIGHT), spacing, *text))
 
     #--- Helpful methods

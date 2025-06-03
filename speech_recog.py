@@ -47,7 +47,7 @@ class SpeechRecognition:
                 text = rslt.split('"')[3]
 
 
-                if not wake_detected and wakeword.match(text):
+                if not wake_detected:# and wakeword.match(text):
                     # CHANGE SCREEN TO LISTENING
                     wake_detected = True
                     continue

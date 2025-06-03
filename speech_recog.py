@@ -36,7 +36,7 @@ class SpeechRecognition:
         model = Model(SpeechRecognition.MODEL_PATH)
         recogniser = KaldiRecognizer(model, SpeechRecognition.RATE) 
         
-        wakeword = VoskWakeWordPlugin(self.settings['wake-word'], rule="contains")
+        wakeword = VoskWakeWordPlugin(self.settings['wake-word'])
         wake_detected = False # If true, start listening
         
 

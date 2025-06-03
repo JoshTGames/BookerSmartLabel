@@ -225,15 +225,16 @@ class Screen:
     display_lock = threading.Lock()
     instance = None
 
-    def __init__(self):
+    def __init__(self, do_log: bool = False):
         """Constructor for our screen"""
         self.EPD = epd2in13_V4.EPD()
         self.EPD_VERSION = "EPD2\"13V4"
         self.WIDTH, self.HEIGHT = self.EPD.width, self.EPD.height
-
         self.running = True
         self.sleeping = False
         self.display_queue: q[Image] = q()
+        
+        self.do_log = do_log
 
         settings = json.read_file(os.getcwd() + '/settings.json')['text']
 
@@ -274,6 +275,7 @@ class Screen:
         Args:
             msg (str): Message to output to console
         """
+        if(not self.do_log): return
         print(f"{self.EPD_VERSION}: {msg}")
 
     def init(self, fast: bool = False, clean: bool = False) -> None:

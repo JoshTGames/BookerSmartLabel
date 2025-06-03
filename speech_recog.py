@@ -28,7 +28,9 @@ class SpeechRecognition:
 
     def __listener(self):
         """Collects data from microphone & enters it into a queue"""
-        def callback(indata, _, __, ___):
+        def callback(indata, _, __, status):
+            if status:
+                print(status, flush=True)
             self.data.put(indata[:])
 
         with sd.RawInputStream(SpeechRecognition.RATE, blocksize=SpeechRecognition.CHUNK, dtype="int16", channels=1, callback=callback):

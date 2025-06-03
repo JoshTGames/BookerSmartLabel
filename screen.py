@@ -1,42 +1,3 @@
-
-# def display_text(textData: List[Tuple[str, str]], spacing: float):
-#     """
-#     Distributes text on the 2"13V4 waveshare screen
-
-#     Parameters:
-#     textData (array): [[string, string],...] - text, fontStyle
-#     spacing (float): distance between element
-#     """
-#     image = Image.new('1', (HEIGHT, WIDTH), 255)
-#     draw = ImageDraw.Draw(image)
-    
-#     heights = []
-#     total_height = 0
-    
-#     for txt, sizing in textData:
-#         font = ImageFont.truetype(fontSettings['font'], fontSettings['sizing'][sizing])
-#         bbox = font.getbbox(txt)
-        
-#         tH = (bbox[3] - bbox[1])
-
-#         heights.append((txt, font, tH))
-#         total_height += tH
-    
-#     total_spacing = spacing * (len(heights) - 1) if len(heights) > 1 else 0
-#     content_height = total_height + total_spacing
-
-#     y_start = (WIDTH - content_height) // 2
-
-#     y_cursor = y_start
-
-#     for txt, font, tH in heights:
-#         draw.text((HEIGHT//2, y_cursor + tH // 2), txt, font=font, fill=0, anchor="mm", align="center")
-#         y_cursor += tH + spacing
-        
-#     clear()
-#     epd.display_fast(epd.getbuffer(image))
-
-
 # def wrap_text(text, font, max_width):
 #     """Breaks text into multiple lines if it exceeds max width"""
 #     words = text.split(" ")
@@ -55,8 +16,6 @@
 #         lines.append(current_line)
 
 #     return lines
-
-
 
 import threading, sys, os
 from queue import Queue as q
@@ -129,8 +88,12 @@ class Text:
                     font = self.__adjust_for_width(font, desired_size, WIDTH, t)
                     
                     _, h = Text.__get_size(font, t)
-                    heights.append((font, t, a, h))
-                    total_height += h
+                    lines = self.__wrap_text(font, WIDTH, t)
+                    
+                    for l in lines:
+                        heights.append((font, l, a, h))
+                        total_height += h
+                        
 
             # case "wrap":
 
@@ -146,8 +109,6 @@ class Text:
             y_cursor += h + spacing
         return image
         
-    
-    
     def __adjust_for_width(self, font: ImageFont, desired_font_size: int, max_width: int, *text: str) -> ImageFont:
         """Calculates a size for the text so it will all fit within the width of the screen
             Args:
@@ -170,6 +131,21 @@ class Text:
         print(f"{desired_font_size}/{final_size}")
         return ImageFont.truetype(self.font_path, final_size)
 
+    def __wrap_text(self, font: ImageFont, max_width: int, text: str):
+        """"""
+        words = text.split(" ")
+        lines = []
+        cur_line = ""
+
+        for word in words:
+            tst_line = f'{cur_line} {word}'.strip()
+            width, _ = Text.__get_size(font, tst_line)
+            if(width > max_width):
+                lines.append(cur_line)
+                cur_line = word
+                continue
+            cur_line = tst_line
+        return lines
 
 
 class Screen:

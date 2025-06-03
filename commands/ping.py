@@ -18,5 +18,5 @@ class Ping(command_base.Command):
         rslt = super().run(*args, **kwargs)
         print("pong!")
         screen = s.Screen.instance
-        screen.set(screen.TEXT.create_wrapper((screen.WIDTH, screen.HEIGHT), "scale", 0, ("Josh", "h1", "center"),("Stock Control", "h3", "center")))
+        screen.set(screen.TEXT.create_wrapper((screen.WIDTH, screen.HEIGHT), "scale", 0, ("This is a test line", "h1", "center"),("Just so we can test various scaling and if it successfully wraps and what not. Straight up?", "h2", "center")))
         return rslt

@@ -58,6 +58,7 @@ class SpeechRecognition:
                 if not self.wake_detected and self.wakeword in text.lower():
                     # CHANGE SCREEN TO LISTENING
                     s.instance.set_text(0, ("Listening...", "h2", "center"))
+                    print("Listening!")
                     self.wake_detected = True
                     continue
 

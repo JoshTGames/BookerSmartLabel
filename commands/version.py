@@ -19,6 +19,6 @@ class Version(command_base.Command):
     def run(self, *args, **kwargs):
         rslt = super().run(*args, **kwargs)
 
-        print(version)
-        s.Screen.instance.set_text(0, (version, "h1", "center"))
+        print(f"Version: {version}")
+        s.Screen.instance.set_text(0, ("Version", "h1", "center"),(version, "h3", "center"))
         return rslt

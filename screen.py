@@ -171,11 +171,11 @@ class Screen:
         while self.running:
             image = self.display_queue.get(block=True)
             if(self.sleeping):
-                self.init(True, True)
+                self.init(False, True)
 
             with Screen.display_lock:
                 self.clear()
-                self.EPD.display_fast(self.EPD.getbuffer(image))
+                self.EPD.display(self.EPD.getbuffer(image))
                 if(self.display_queue.empty()):
                     self.sleep()
 

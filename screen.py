@@ -171,7 +171,7 @@ class Screen:
         while self.running:
             image = self.display_queue.get(block=True)
             if(self.sleeping):
-                self.init_fast(False, True)
+                self.init(True, True)
 
             with Screen.display_lock:
                 self.clear()

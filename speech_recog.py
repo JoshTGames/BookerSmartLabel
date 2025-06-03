@@ -6,7 +6,7 @@ from vosk import Model, KaldiRecognizer
 
 import json_manager as j
 from screen import Screen as s
-from command_handler import CommandHandler as ch
+from command_handler import CommandHandler
 
 
 class SpeechRecognition:
@@ -15,12 +15,13 @@ class SpeechRecognition:
     MODEL_PATH = "vosk-model-small-en-us-0.15"
 
 
-    def __init__(self):
+    def __init__(self, ch: CommandHandler):
         self.data = Q()
         self.settings = j.read_file(os.getcwd() + '/settings.json')['speech']
 
         self.model = Model(SpeechRecognition.MODEL_PATH)
         self.recogniser = KaldiRecognizer(self.model, SpeechRecognition.RATE) 
+        self.ch = ch
         
         self.wakeword = self.settings['wake-word']
         self.wake_detected = False # If true, start listening
@@ -54,15 +55,14 @@ class SpeechRecognition:
                 text = rslt.split('"')[3]
 
 
-                if not wake_detected and self.wakeword in text.lower():
+                if not self.wake_detected and self.wakeword in text.lower():
                     # CHANGE SCREEN TO LISTENING
                     s.instance.set_text(0, ("Listening...", "h2", "center"))
-                    wake_detected = True
+                    self.wake_detected = True
                     continue
 
-                if wake_detected:
+                if self.wake_detected:
                     print(f"Recognised: {text}")
                     message = text.split()
-                    print(ch.instance)
-                    ch.instance.execute(message[0], *message[1:])
-                    wake_detected = False
+                    self.ch.execute(message[0], *message[1:])
+                    self.wake_detected = False

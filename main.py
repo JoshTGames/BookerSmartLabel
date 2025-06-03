@@ -1,7 +1,7 @@
 import command_handler, screen as s, speech_recog as sr
 MANAGER : command_handler.CommandHandler = command_handler.CommandHandler()
 SCREEN : s.Screen = s.Screen()
-SPEECH : sr.SpeechRecognition = sr.SpeechRecognition()
+SPEECH : sr.SpeechRecognition = sr.SpeechRecognition(MANAGER)
 
 # Start thread for speech recog...
 

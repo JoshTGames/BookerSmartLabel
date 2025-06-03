@@ -209,12 +209,11 @@ class Text:
         final_size = desired_font_size
         for x in text:
             x_size = desired_font_size
-            x_font = font
 
-            width, _ = Text.__get_size(x_font, x)
+            width, _ = Text.__get_size(font, x)
             while width > max_width and x_size > 1:
                 x_size -= 1
-                x_font = ImageFont.truetype(x_font.path, x_size)
+                width, _ = Text.__get_size(ImageFont.truetype(self.font_path, x_size), x)
             
             # If x_size is less than size, apply
             final_size = x_size if x_size < final_size else final_size 

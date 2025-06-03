@@ -200,7 +200,7 @@ class Screen:
 
     def set_text(self, spacing: int = 10, *text: Tuple[str, str, str]) -> None:
         """Presents a visual to the screen - Adds image to queue to be presented"""
-        self.display_queue.put(self.TEXT.create_wrapper((self.WIDTH, self.HEIGHT), spacing, text))
+        self.display_queue.put(self.TEXT.create_wrapper((self.WIDTH, self.HEIGHT), spacing, *text))
 
     #--- Helpful methods
     def __log(self, msg: str): 

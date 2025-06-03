@@ -1,4 +1,5 @@
-import sys, os, pyaudio
+import sys, os, time, sounddevice as sd
+
 from queue import Queue as Q
 from threading import Thread
 from vosk import Model, KaldiRecognizer
@@ -6,13 +7,6 @@ from vosk import Model, KaldiRecognizer
 import json_manager as j
 from screen import Screen as s
 from command_handler import CommandHandler as ch
-
-# Suppress VOSK logs
-os.environ["VOSK_LOG_LEVEL"] = "0"
-
-# Suppress ALSA & other error messages
-sys.stderr = open(os.devnull, "w")
-
 
 
 class SpeechRecognition:
@@ -34,12 +28,12 @@ class SpeechRecognition:
 
     def __listener(self):
         """Collects data from microphone & enters it into a queue"""
-        pa = pyaudio.PyAudio()
-        stream = pa.open(format=pyaudio.paInt16, channels=1, rate= SpeechRecognition.RATE, input=True, frames_per_buffer=SpeechRecognition.CHUNK)
+        def callback(indata, _, __, ___):
+            self.data.put(indata[:])
 
-        while True:
-            data = stream.read(SpeechRecognition.CHUNK)
-            self.data.put(data)
+        with sd.InputStream(SpeechRecognition.RATE, channels=1, callback=callback):
+            while True:
+                time.sleep(0.1)
 
     def __process(self):
         model = Model(SpeechRecognition.MODEL_PATH)
@@ -68,4 +62,3 @@ class SpeechRecognition:
                     print(message)
                     ch.instance.execute(message[0], message[1:])
                     wake_detected = False
-

@@ -55,7 +55,7 @@ class Text:
             "center": "mm",
             "left": "lm",
             "right": "rm"
-        }
+        }        
         Text.instance = self
 
     def create_wrapper(self, size: Tuple[int, int], mode: str, spacing: int, *text: Tuple[str, str, str]) -> Image:
@@ -103,8 +103,14 @@ class Text:
 
         y_cursor = y_start
 
-        for f, t, a, h in heights:
-            draw.text((WIDTH, y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)#WIDTH//2
+        x_pos = {
+            "center": WIDTH//2,
+            "left": 0,
+            "right": WIDTH
+        }      
+
+        for f, t, a, h in heights:            
+            draw.text((x_pos[a], y_cursor + h // 2), t, font=f, fill=0, anchor=self.anchor_interface[a], align=a)#WIDTH//2
             y_cursor += h + spacing
         return image
         

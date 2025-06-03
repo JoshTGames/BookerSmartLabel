@@ -167,6 +167,7 @@ class Text:
             
             # If x_size is less than size, apply
             final_size = x_size if x_size < final_size else final_size 
+        print(f"{desired_font_size}/{final_size}")
         return ImageFont.truetype(self.font_path, final_size)
 
 

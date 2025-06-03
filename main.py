@@ -1,6 +1,6 @@
-import command_handler, screen
+import command_handler, screen as s
 MANAGER : command_handler.CommandHandler = command_handler.CommandHandler()
-SCREEN : screen.Screen = screen.Screen()
+SCREEN : s.Screen = s.Screen()
 
 # Start thread for speech recog...
 

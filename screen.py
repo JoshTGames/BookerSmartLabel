@@ -161,6 +161,8 @@ class Text:
         WIDTH: int = size[0]
         HEIGHT: int = size[1]
 
+        print(f"{type(size)} || {type(*text)} || {type(text[0])}")
+
         image = Image.new("1", (WIDTH, HEIGHT), 255)
         draw = ImageDraw.Draw(image)
 

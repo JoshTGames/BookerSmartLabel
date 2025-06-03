@@ -18,5 +18,5 @@ class Ping(command_base.Command):
         rslt = super().run(*args, **kwargs)
         print("pong!")
         screen = s.Screen.instance
-        screen.set_text(20, ("Josh", "h1", "left"),("Stock Control", "h3", "right"))
+        screen.set_text(0, ("Pong!", "h1", "center"))
         return rslt

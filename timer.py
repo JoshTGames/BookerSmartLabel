@@ -1,10 +1,11 @@
 import threading
+from typing import Callable
 
 class Timer:
     """Allows us to create timers"""
 
     instance = None
-    def __init__(self, timeout: int, callback: callable[[], None]):
+    def __init__(self, timeout: int, callback: Callable[[], None]):
         self.timeout = timeout
         self.callback = callback
 

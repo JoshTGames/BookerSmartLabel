@@ -7,6 +7,7 @@ from vosk import Model, KaldiRecognizer
 import json_manager as j
 from screen import Screen as s
 from command_handler import CommandHandler
+from timer import Timer as t
 
 
 class SpeechRecognition:
@@ -59,6 +60,7 @@ class SpeechRecognition:
                     # CHANGE SCREEN TO LISTENING
                     s.instance.set_text(0, ("Listening...", "h2", "center"))
                     print("Listening!")
+                    t.instance.stop()
                     self.wake_detected = True
                     continue
 

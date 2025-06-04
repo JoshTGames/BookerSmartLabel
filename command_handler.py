@@ -35,7 +35,7 @@ class CommandHandler:
                     count+=1
         print(f"Successfully located {count} command(s)!")
 
-        
+        self.timer = None
     
     def register(self, command: command_base.Command) -> command_base.Command:
         """Makes command usable

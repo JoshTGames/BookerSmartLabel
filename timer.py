@@ -4,7 +4,7 @@ class Timer:
     """Allows us to create timers"""
 
     instance = None
-    def __init__(self, timeout: int, callback: function):
+    def __init__(self, timeout: int, callback: callable):
         self.timeout = timeout
         self.callback = callback
 

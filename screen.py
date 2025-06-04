@@ -171,8 +171,9 @@ class Screen:
 
         self.thread = threading.Thread(target=self.__display_async, daemon=True)
         self.thread.start()
-
-        self.set_text(10, *Screen.default_screen)
+        
+        self.set_default()
+        
         Screen.instance = self
 
     def __display_async(self):
@@ -196,6 +197,8 @@ class Screen:
         """
         self.display_queue.put(self.TEXT.create_wrapper((self.WIDTH, self.HEIGHT), spacing, *text))
 
+    def set_default(self):
+        self.set_text(10, *Screen.default_screen)
     #--- Helpful methods
     def __log(self, msg: str): 
         """Logs to console

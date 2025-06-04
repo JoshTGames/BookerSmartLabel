@@ -1,4 +1,7 @@
 import os, importlib, inspect, commands.command_base as command_base
+from timer import Timer as t
+import json_manager
+from screen import Screen as s
 
 class CommandCache:
     """Means of carrying out a command again in the future"""
@@ -31,6 +34,8 @@ class CommandHandler:
                     self.register(obj())
                     count+=1
         print(f"Successfully located {count} command(s)!")
+
+        self.timer = t(json_manager.read_file(f'{os.getcwd()}/settings.json')['screen-timer'], s.instance.set_default)
     
     def register(self, command: command_base.Command) -> command_base.Command:
         """Makes command usable
@@ -78,4 +83,8 @@ class CommandHandler:
         success = cmd.run(*args, **kwargs) 
         if success and cmd.name != "repeat":
             CommandHandler.lastCommand = CommandCache(cmd, *args, **kwargs)
+
+        # Timer for screen
+        if success:
+            self.timer.start()
         return success     

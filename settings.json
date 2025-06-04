@@ -2,6 +2,7 @@
     "speech":{
         "wake-word": "hey booker"
     },
+    "screen-timer": 10,
     "text":{
         "font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
         "min-size": 10,

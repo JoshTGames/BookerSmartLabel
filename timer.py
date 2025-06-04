@@ -29,7 +29,7 @@ class Timer:
             self.thread.join()
 
     def run(self):
-        if not self.stop_event.wait(self.timeout):
+        if not self.stop_event.wait(self.timeout) and self.callback:
             self.callback()
     
     

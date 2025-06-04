@@ -87,7 +87,7 @@ class CommandHandler:
         # Timer for screen
         if success:
             if(self.timer == None):
-                self.timer = t(json_manager.read_file(f'{os.getcwd()}/settings.json')['screen-timer'], s.instance.set_default())
+                self.timer = t(json_manager.read_file(f'{os.getcwd()}/settings.json')['screen-timer'], s.instance.set_default)
             try:
                 self.timer.start()
             except:

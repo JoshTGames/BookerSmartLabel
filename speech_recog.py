@@ -60,7 +60,7 @@ class SpeechRecognition:
                     # CHANGE SCREEN TO LISTENING
                     s.instance.set_text(0, ("Listening...", "h2", "center"))
                     print("Listening!")
-                    t.instance.stop()
+                    t.instance.start()
                     self.wake_detected = True
                     continue
 

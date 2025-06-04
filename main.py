@@ -4,7 +4,9 @@ SPEECH : sr.SpeechRecognition = sr.SpeechRecognition(MANAGER)
 SCREEN : s.Screen = s.Screen()
 
 # CMDLINE
-while True:
-    cmd = str(input("Command:\t")).split()
-    if(len(cmd) <= 0): continue
-    MANAGER.execute(cmd[0], *cmd[1:])
+
+# DOESNT WORK IN SYSTEMCTL
+# while True:
+#     cmd = str(input("Command:\t")).split()
+#     if(len(cmd) <= 0): continue
+#     MANAGER.execute(cmd[0], *cmd[1:])

@@ -67,5 +67,6 @@ class SpeechRecognition:
                 if self.wake_detected:
                     print(f"Recognised: {text}")
                     message = text.split()
-                    self.ch.execute(message[0], *message[1:])
+                    if(len(message) > 0):
+                        self.ch.execute(message[0], *message[1:])
                     self.wake_detected = False

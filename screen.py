@@ -11,6 +11,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 from typing import List, Tuple
 
+default_data = j.read_file(f"{os.getcwd()}/user.json")
+
 class Text:
     """Used to manipulate text more appropriately for EPD screens"""
 
@@ -140,6 +142,8 @@ class Text:
 class Screen:
     """Class to manage our screen"""
 
+    default_screen = [(default_data['name'], "h1", "center"), (default_data['role'], "h3", "center")]
+
     display_lock = threading.Lock()
     instance = None
 
@@ -168,6 +172,7 @@ class Screen:
         self.thread = threading.Thread(target=self.__display_async, daemon=True)
         self.thread.start()
 
+        self.set_text(10, *Screen.default_screen)
         Screen.instance = self
 
     def __display_async(self):

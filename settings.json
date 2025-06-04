@@ -1,8 +1,4 @@
 {
-    "user":{
-        "name": "Josh",
-        "role": "Stock Control"
-    },
     "speech":{
         "wake-word": "hey booker"
     },

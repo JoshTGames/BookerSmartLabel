@@ -35,7 +35,7 @@ class CommandHandler:
                     count+=1
         print(f"Successfully located {count} command(s)!")
 
-        self.timer = t(json_manager.read_file(f'{os.getcwd()}/settings.json')['screen-timer'], s.instance.set_default)
+        self.timer = t(json_manager.read_file(f'{os.getcwd()}/settings.json')['screen-timer'], s.instance.set_default())
     
     def register(self, command: command_base.Command) -> command_base.Command:
         """Makes command usable

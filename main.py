@@ -7,7 +7,7 @@ import os, time, json_manager
 MANAGER : command_handler.CommandHandler = command_handler.CommandHandler()
 SPEECH : sr.SpeechRecognition = sr.SpeechRecognition(MANAGER)
 SCREEN : s.Screen = s.Screen()
-TIMER : Timer = Timer(json_manager.read_file(f'{os.getcwd()}/settings.json')['screen-timer'], s.instance.set_default)
+TIMER : Timer = Timer(json_manager.read_file(f'{os.getcwd()}/settings.json')['screen-timer'], SCREEN.set_default)
 
 # CMDLINE
 
